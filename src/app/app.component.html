@@ -1,0 +1,115 @@
+<!-- Form tag but need to inport form module in module.ts -->
+<!--
+  #newUserForm=”ngForm”: Angular automatically attaches an ngForm directive 
+  to HTML form elements, but with this,
+  we give our form a template reference name to make it easy to access its value and validity. 
+
+  (ngSubmit) - is the function which will be called when submit button is clicked.
+
+  [(ngModel)]=”userName”. This effectively creates two-way data binding, so if you change 
+  the value of a property in the component class the change will be reflected in the template.
+
+   #someName=”ngModel” syntax. We can then use these references to access the value or validity 
+   of these fields.
+   note: dont use same name for [(ngModel)] and #refrence variable. HTML will throw error.
+   cannot reference..
+
+   Each form field that has an ngModel directive should also have a name attribute set and that’s 
+   the name that Angular will use internally for the form’s model representation. 
+   The value for name doesn’t have to be the same as the value bound in the component 
+   class using [(ngModel)].
+-->
+<div class="Formbody">
+<form #newUserForm = "ngForm" (ngSubmit)="onSubmit(newUserForm)">
+  FirstName......:
+  <input type="text" placeholder="Firstname" required minlength="2" maxlength= "15" pattern="^[a-zA-Z]*$"
+  [(ngModel)] = Firstname name="Firstname" #firstname = "ngModel">
+    <!-- Checking for the validiting of the enter value. -->
+    <div *ngIf = "firstname.errors && (firstname.touched || firstname.dirty)">
+       <div [hidden] = "!firstname.errors.required">
+           <p>Valid Firstname is required.</p>
+       </div>
+       <div [hidden] = "!firstname.errors.minlength">
+          <p>Please enter atleast 2 char lenth Firstname.</p>
+       </div>
+       
+       <div [hidden] = "!firstname.errors.pattern">
+          <p>Please enter only Characters</p>
+       </div>
+    </div>
+
+  <br>
+  <br>
+
+  LastName.......:
+  <input type="text" placeholder="Lastname" required minlength="1"  maxlength= "15" pattern="^[a-zA-Z]*$"
+  [(ngModel)] = Lastname name="Lastname" #lastname = "ngModel">
+   <!-- Checking for the validiting of the enter value. --> 
+  <div *ngIf = "lastname.errors && (lastname.touched || lastname.dirty)">
+      <div [hidden] = "!lastname.errors.required">
+          <p>Valid lastname is required.</p>
+      </div>
+      <div [hidden] = "!lastname.errors.minlength">
+         <p>Please enter atleast 2 char lenth lastname.</p>
+      </div>
+      <div [hidden] = "!lastname.errors.pattern">
+         <p>Please enter only Characters</p>
+      </div>
+   </div>
+
+    <br>
+    <br>
+
+  Department.....: 
+  <input type="text" placeholder="Department" required minlength="2"
+  [(ngModel)] = Department name="Department" #department = "ngModel">
+
+    <div *ngIf = "!department.valid && (department.touched || department.dirty || !department.errors.required)">
+      <p>Department is required.</p>
+    </div>
+
+    <br>
+    <br>
+
+  
+
+  Select Degree.:
+    <select name="Degree" [(ngModel)]= Degree #degree = "ngModel" required>
+    <!-- To get select value -->    
+    <option  [value]="degree" [disabled]="true">Select Option</option>
+    <!-- get the list of valid inputs -->       
+    <option *ngFor="let TiTles of EMPDeg" [ngValue]="TiTles.title">
+    {{TiTles.title}}
+    </option>
+    </select>
+    <div *ngIf = "degree.touched && degree.pristine">
+      <p>Provide valid Degree.</p>
+    </div>
+    <br>
+    <br>
+
+  <button type="submit" [disabled]="!newUserForm.form.valid">
+      Submit
+  </button>  
+  <br>
+  <br>
+
+</form>
+
+<div *ngIf = "len >= 0">
+  <tr>
+      <th>Si no</th>
+      <th>FirstName</th>
+      <th>Lastmname</th>
+      <th>Department</th>
+      <th>Degree</th> 
+  </tr>    
+  <tr *ngFor = 'let ids of EMPARRAY, let i = index'>
+      <td>{{i+1}}</td>
+      <td>{{ids.Firstname}}</td>
+      <td>{{ids.Lastname}}</td>
+      <td>{{ids.Department}}</td>
+      <td>{{ids.Degree}}</td>
+  </tr>
+</div>
+</div>
